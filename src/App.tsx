@@ -1,35 +1,62 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-// Définition des types
+// Types
 interface Table {
+  _id: string;
   name: string;
   players: string[];
 }
 
 function App() {
   const [tables, setTables] = useState<Table[]>([]);
-  const [newTableName, setNewTableName] = useState<string>("");
+  const [newTableName, setNewTableName] = useState("");
 
-  // Ajouter une nouvelle table
-  const addTable = () => {
+  // Charger les tables depuis le backend
+  useEffect(() => {
+    fetch("http://localhost:5000/table")
+      .then((res) => res.json())
+      .then((data) => setTables(data))
+      .catch((err) => console.error("Erreur chargement tables:", err));
+  }, []);
+
+  // Créer une nouvelle table
+  const addTable = async () => {
     if (!newTableName.trim()) return;
-    setTables([...tables, { name: newTableName, players: [] }]);
+
+    const res = await fetch("http://localhost:5000/table", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newTableName }),
+    });
+
+    const table = await res.json();
+    setTables([...tables, table]);
     setNewTableName("");
   };
 
-  // Ajouter un joueur à une table
-  const addPlayer = (index: number, playerName: string) => {
+  // Ajouter un joueur
+  const addPlayer = async (tableId: string, playerName: string) => {
     if (!playerName.trim()) return;
-    const updatedTables = [...tables];
-    updatedTables[index].players.push(playerName);
-    setTables(updatedTables);
+
+    const res = await fetch(`http://localhost:5000/table/${tableId}/players`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ playerName }),
+    });
+
+    const updatedTable = await res.json();
+
+    // Mettre à jour la table dans le state
+    setTables(
+      tables.map((t) => (t._id === updatedTable._id ? updatedTable : t))
+    );
   };
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h1>🎲 Mini JDR - Tables de jeu</h1>
+      <h1>🎲 Mini JDR - Tables de jeu (MongoDB)</h1>
 
-      {/* Formulaire de création de table */}
+      {/* Formulaire création table */}
       <div>
         <input
           type="text"
@@ -43,9 +70,9 @@ function App() {
       <hr />
 
       {/* Liste des tables */}
-      {tables.map((table, index) => (
+      {tables.map((table) => (
         <div
-          key={index}
+          key={table._id}
           style={{
             border: "1px solid #ccc",
             padding: "10px",
@@ -59,21 +86,23 @@ function App() {
             ))}
           </ul>
 
-          {/* Ajouter un joueur */}
-          <AddPlayerForm onAdd={(playerName) => addPlayer(index, playerName)} />
+          {/* Formulaire ajout joueur */}
+          <AddPlayerForm
+            onAdd={(playerName) => addPlayer(table._id, playerName)}
+          />
         </div>
       ))}
     </div>
   );
 }
 
-// Composant séparé : formulaire d'ajout de joueur
+// 🔹 Composant formulaire ajout joueur
 interface AddPlayerFormProps {
   onAdd: (playerName: string) => void;
 }
 
 function AddPlayerForm({ onAdd }: AddPlayerFormProps) {
-  const [playerName, setPlayerName] = useState<string>("");
+  const [playerName, setPlayerName] = useState("");
 
   const handleAdd = () => {
     if (playerName.trim()) {
