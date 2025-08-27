@@ -1,69 +1,101 @@
-# React + TypeScript + Vite
+# 🏰 Au Pied de la Taverne - JDR
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Une application simple et élégante pour gérer vos tables de jeu de rôle, conçue avec React, TypeScript et CSS moderne.
 
-Currently, two official plugins are available:
+## ✨ Fonctionnalités
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **🔐 Authentification** : Système de connexion/inscription simple
+- **🎨 Interface Moderne** : Design épuré avec CSS personnalisé
+- **📱 Responsive** : Interface adaptée à tous les écrans
+- **⚡ Performance** : Application légère et rapide
 
-## Expanding the ESLint configuration
+## 🚀 Technologies Utilisées
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend** : React 19 + TypeScript
+- **Styling** : CSS moderne avec gradients et animations
+- **Build Tool** : Vite
+- **Fonts** : Inter (Google Fonts)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+1. **Cloner le projet**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+   ```bash
+   git clone [url-du-repo]
+   cd Au-pied-de-la-taverne-JDR
+   ```
+
+2. **Installer les dépendances**
+
+   ```bash
+   npm install
+   ```
+
+3. **Lancer en développement**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Construire pour la production**
+   ```bash
+   npm run build
+   ```
+
+## 📁 Structure du Projet
+
+```
+src/
+├── components/          # Composants React
+│   └── AuthForm.tsx    # Formulaire d'authentification
+├── utils/              # Utilitaires
+│   └── api.ts         # Fonctions d'API
+├── App.tsx            # Composant principal
+├── index.css          # Styles CSS personnalisés
+└── main.tsx           # Point d'entrée
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎯 Utilisation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Connexion
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Accédez à l'application
+2. Créez un compte ou connectez-vous
+3. Accédez à votre espace personnel
+
+## 🎨 Design
+
+- **Gradient de fond** : Dégradé bleu-violet moderne
+- **Cartes blanches** : Interface claire et lisible
+- **Animations** : Transitions fluides et effets hover
+- **Typographie** : Police Inter pour une excellente lisibilité
+
+## 🔧 Scripts Disponibles
+
+- `npm run dev` : Lance le serveur de développement
+- `npm run build` : Construit l'application pour la production
+- `npm run preview` : Prévisualise la version de production
+- `npm run lint` : Vérifie la qualité du code
+
+## 🌟 Fonctionnalités Futures
+
+- [ ] Gestion des tables de jeu
+- [ ] Système de chat
+- [ ] Gestion des personnages
+- [ ] Intégration de dés virtuels
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à :
+
+- Signaler des bugs
+- Proposer des améliorations
+- Soumettre des pull requests
+
+## 📄 Licence
+
+Ce projet est sous licence MIT.
+
+---
+
+**🏰 Au Pied de la Taverne** - Simple, élégant, efficace ! 🎲✨

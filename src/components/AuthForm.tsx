@@ -7,6 +7,7 @@ interface Props {
 
 export default function AuthForm({ onAuthSuccess }: Props) {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -18,6 +19,16 @@ export default function AuthForm({ onAuthSuccess }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (
+      !formData.email ||
+      !formData.password ||
+      (!isLogin && !formData.username)
+    ) {
+      alert("Veuillez remplir tous les champs requis");
+      return;
+    }
+
+    setIsLoading(true);
     try {
       if (isLogin) {
         const data = await apiFetch("/auth/login", {
@@ -36,57 +47,95 @@ export default function AuthForm({ onAuthSuccess }: Props) {
         });
         alert("Inscription réussie, connectez-vous !");
         setIsLogin(true);
+        setFormData({ username: "", email: "", password: "" });
       }
     } catch (err: any) {
-      alert(err.message);
+      alert(err.message || "Une erreur est survenue");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">
-        {isLogin ? "Connexion" : "Inscription"}
-      </h2>
-
-      {!isLogin && (
-        <input
-          name="username"
-          placeholder="Pseudo"
-          value={formData.username}
-          onChange={handleChange}
-          className="w-full p-2 mb-2 border rounded"
-        />
-      )}
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
-        className="w-full p-2 mb-2 border rounded"
-      />
-      <input
-        name="password"
-        type="password"
-        placeholder="Mot de passe"
-        value={formData.password}
-        onChange={handleChange}
-        className="w-full p-2 mb-4 border rounded"
-      />
-
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-      >
-        {isLogin ? "Se connecter" : "S’inscrire"}
-      </button>
-
-      <p className="text-sm mt-3 text-center">
-        {isLogin ? "Pas de compte ?" : "Déjà inscrit ?"}{" "}
-        <button className="text-blue-600" onClick={() => setIsLogin(!isLogin)}>
-          {isLogin ? "Créer un compte" : "Se connecter"}
-        </button>
+    <div className="container">
+      <h1 className="title">🏰 Au Pied de la Taverne</h1>
+      <p className="subtitle">
+        {isLogin ? "Accédez à vos aventures" : "Rejoignez la communauté des aventuriers"}
       </p>
+
+      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+        {!isLogin && (
+          <div className="form-group">
+            <label className="label">Nom d'Aventurier</label>
+            <input
+              name="username"
+              placeholder="Votre nom d'aventurier"
+              value={formData.username}
+              onChange={handleChange}
+              className="input"
+              required
+            />
+          </div>
+        )}
+
+        <div className="form-group">
+          <label className="label">Email</label>
+          <input
+            name="email"
+            type="email"
+            placeholder="votre@email.com"
+            value={formData.email}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="label">Mot de Passe</label>
+          <input
+            name="password"
+            type="password"
+            placeholder="Votre mot de passe"
+            value={formData.password}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="button"
+        >
+          {isLoading ? (
+            <>
+              <span className="loading"></span>
+              {isLogin ? "Connexion..." : "Inscription..."}
+            </>
+          ) : (
+            <>
+              {isLogin ? "🚪 Se connecter" : "📜 S'inscrire"}
+            </>
+          )}
+        </button>
+      </form>
+
+      <div className="switch-form">
+        <p className="switch-text">
+          {isLogin ? "Nouveau dans la région ?" : "Déjà un aventurier ?"}
+        </p>
+        <button
+          onClick={() => {
+            setIsLogin(!isLogin);
+            setFormData({ username: "", email: "", password: "" });
+          }}
+          className="switch-button"
+        >
+          {isLogin ? "📜 Créer un compte" : "🔑 Se connecter"}
+        </button>
+      </div>
     </div>
   );
 }
