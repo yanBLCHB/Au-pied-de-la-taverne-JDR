@@ -75,7 +75,7 @@ export default function CreateTableForm({ onTableCreated }: Props) {
         >
           🎲 Créer une Nouvelle Table de Jeu
         </button>
-        <p style={{ color: "#718096", marginTop: "15px", fontSize: "0.9rem" }}>
+        <p style={{ color: "#ffffffff", marginTop: "15px", fontSize: "0.9rem" }}>
           Rassemblez vos compagnons d'aventure pour une session épique !
         </p>
       </div>
